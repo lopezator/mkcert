@@ -298,7 +298,7 @@ func (m *mkcert) loadCA() {
 	keyPEMBlock, err := ioutil.ReadFile(filepath.Join(m.CAROOT, rootKeyName))
 	fatalIfErr(err, "failed to read the CA key")
 	keyDERBlock, _ := pem.Decode(keyPEMBlock)
-	if keyDERBlock == nil || keyDERBlock.Type != "PRIVATE KEY" {
+	if keyDERBlock == nil || (keyDERBlock.Type != "PRIVATE KEY" && keyDERBlock.Type != "RSA PRIVATE KEY") {
 		log.Fatalln("ERROR: failed to read the CA key: unexpected content")
 	}
 	m.caKey, err = x509.ParsePKCS8PrivateKey(keyDERBlock.Bytes)
